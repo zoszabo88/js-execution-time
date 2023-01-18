@@ -1,26 +1,47 @@
 #!/bin/bash
-echo -n 'Clearing result files...'
+
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+
+echo -n -e "${YELLOW} Clearing result files..."
 echo '' > results.txt
-echo 'DONE'
+echo 'DONE' && echo -e "${NC}"
 
-echo 'Running MAIN.JS'
+for BRANCH in $(git for-each-ref --format='%(refname)' refs/heads/); do
+  if [ "$BRANCH" = 'refs/heads/main' ]; then
+    continue
+  fi;
 
-TOTAL_TIME=0
+  BRANCH_NAME=$(echo $BRANCH | cut -d"/" -f3)
+  git checkout $BRANCH_NAME > /dev/null
+  echo -e "${GREEN}$BRANCH_NAME${NC} is checked out"
+  echo ''
 
-for (( i=1; i <= 5; ++i ))
-do
-  START=$(date +%s%N)
+  echo 'Running MAIN.JS'
 
-  CONTENT=`node main.js`
+  TOTAL_TIME=0
+  TEST_RUNS=9
 
-  END=$(date +%s%N)
-  DIFF=$(($END - $START))
+  for (( i=1; i <= $TEST_RUNS; ++i )) do
+    START=$(date +%s%N)
 
-  TOTAL_TIME=$(($TOTAL_TIME + $DIFF))
-  echo "Run $i time: $DIFF"
+    CONTENT=`node main.js`
+
+    END=$(date +%s%N)
+    DIFF=$(($END - $START))
+
+    TOTAL_TIME=$(($TOTAL_TIME + $DIFF))
+    echo "Run $i time: $DIFF"
+  done
+
+  AVERAGE_TIME=$(($TOTAL_TIME/$TEST_RUNS))
+  MILLISECONDS="$(($AVERAGE_TIME/1000000)).$(($AVERAGE_TIME%1000000))"
+  echo -e "Average time for ${GREEN}$BRANCH_NAME${NC}: ${YELLOW}$MILLISECONDS${NC}" && echo ''
+
+  echo -e "$BRANCH_NAME\t$MILLISECONDS" >> results.txt
+
 done
 
-AVERAGE_TIME=$(($TOTAL_TIME/5))
-echo "Average time: $AVERAGE_TIME"
-
-echo -e "test\t$AVERAGE_TIME" >> results.txt
+git checkout main > /dev/null
