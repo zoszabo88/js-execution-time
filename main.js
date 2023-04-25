@@ -3,7 +3,7 @@ var THE_RANDOM_STRING = fs.readFileSync("./input.txt", {
   encoding: "utf-8",
   flag: "r",
 }); // 100000014
-var RANGE = 12;
+var RANGE = 14;
 
 function findFirstNonRepeatingRange(randomString, range) {
   for (let i = 0; i <= randomString.length; i++) {
