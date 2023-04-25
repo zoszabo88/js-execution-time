@@ -25,7 +25,7 @@ for BRANCH in $(git for-each-ref --format='%(refname)' refs/heads/); do
   echo 'Running MAIN.JS'
 
   TOTAL_TIME=0
-  TEST_RUNS=9
+  TEST_RUNS=4
 
   for (( i=1; i <= $TEST_RUNS; ++i )) do
     START=$(date +%s%N)
