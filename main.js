@@ -3,19 +3,37 @@ var THE_RANDOM_STRING = fs.readFileSync('./input.txt', { encoding: 'utf-8', flag
 var RANGE = 14;
 
 /*
-Find the first range of 14 character that have no repeating characters and report the index after the range
-> index starting with 0
+ Find the first range of 14 character that have no repeating characters and report the index after the range
+ > index starting with 0
 
-Example:
-  - for a range of 5 instead of 14
+ Example:
+ - for a range of 5 instead of 14
 
-  The string: asasas112345Xasasasa
+ The string: asasas112345Xasasasa
 
-  The unique string: 12345
+ The unique string: 12345
 
-  Report the index of X: 12
+ Report the index of X: 12
 
-You can test by running: node main.js
-*/
+ You can test by running: node main.js
+ */
 
-console.log('first');
+function findFirst14(randomString) {
+  for (let i = 0; i < randomString.length; i++) {
+    let charArray = [];
+    let fourteenChars = randomString.substring(i, i + RANGE);
+    for (let j = 0; j < fourteenChars.length; j++) {
+      if (charArray.includes(fourteenChars[j])) {
+        i = i + j;
+        break;
+      } else {
+        if (j === fourteenChars.length - 1) {
+          return i + RANGE;
+        }
+        charArray.push(fourteenChars[j]);
+      }
+    }
+  }
+}
+
+console.log(findFirst14(THE_RANDOM_STRING));
