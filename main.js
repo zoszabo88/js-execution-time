@@ -31,8 +31,8 @@ for (let i = 1; i < THE_RANDOM_STRING.length; i++) {
 		subarray = "";
 	} else {
 		subarray += THE_RANDOM_STRING[i];
-		if (subarray.length == 14) {
-			console.log("INDEX resulted: " + (result_index + 1) + "\n");
+		if (subarray.length == RANGE) {
+			console.log(result_index + 1);
 			break;
 		}
 	}
