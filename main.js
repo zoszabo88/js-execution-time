@@ -1,21 +1,39 @@
-var fs = require('fs');
-var THE_RANDOM_STRING = fs.readFileSync('./input.txt', { encoding: 'utf-8', flag: 'r' }); // 100000014
+var fs = require("fs");
+var THE_RANDOM_STRING = fs.readFileSync("./input.txt", { encoding: "utf-8", flag: "r" }); // 100000014
 var RANGE = 14;
+let index = null;
+const maxRange = THE_RANDOM_STRING.length - RANGE - 1;
 
-/*
-Find the first range of 14 character that have no repeating characters and report the index after the range
-> index starting with 0
+let charSet = new Set();
+let left = 0;
+let right = 0;
 
-Example:
-  - for a range of 5 instead of 14
+while (right < maxRange) {
+  if (!charSet.has(THE_RANDOM_STRING[right]) && right - left + 1 <= RANGE) {
+    charSet.add(THE_RANDOM_STRING[right]);
+    right++;
+  } else {
+    charSet.delete(THE_RANDOM_STRING[left]);
+    left++;
+  }
 
-  The string: asasas112345Xasasasa
+  if (charSet.size === RANGE) {
+    index = right;
+    break;
+  }
+}
 
-  The unique string: 12345
+// for (let i = 0; i < maxRange; i++) {
+//   let charRange = [];
+//   for (let j = i; j < i + RANGE; j++) {
+//     charRange.push(THE_RANDOM_STRING[j]);
+//   }
 
-  Report the index of X: 12
+//   let newSet = new Set(charRange);
+//   if (charRange.length === newSet.size) {
+//     index = i + RANGE;
+//     break;
+//   }
+// }
 
-You can test by running: node main.js
-*/
-
-console.log('first');
+console.log(index);
