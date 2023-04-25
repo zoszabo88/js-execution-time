@@ -19,8 +19,9 @@ var RANGE = 14;
  */
 
 function findFirst14(randomString) {
-  for (let i = 0; i < randomString.length; i++) {
-    let charArray = [];
+  let realLength = randomString.length - RANGE
+  for (let i = 0; i < realLength; i++) {
+    let charArray = String();
     let fourteenChars = randomString.substring(i, i + RANGE);
     for (let j = 0; j < fourteenChars.length; j++) {
       if (charArray.includes(fourteenChars[j])) {
@@ -30,7 +31,7 @@ function findFirst14(randomString) {
         if (j === fourteenChars.length - 1) {
           return i + RANGE;
         }
-        charArray.push(fourteenChars[j]);
+        charArray = charArray.concat(fourteenChars[j]);
       }
     }
   }
