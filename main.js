@@ -6,7 +6,7 @@ var THE_RANDOM_STRING = fs.readFileSync("./input.txt", {
 var RANGE = 12;
 
 function findFirstNonRepeatingRange(randomString, range) {
-  for (let i = 0; i <= randomString.length - range; i++) {
+  for (let i = 0; i <= randomString.length; i++) {
     if (new Set(randomString.slice(i, i + range)).size === range) {
       return i + range;
     }
